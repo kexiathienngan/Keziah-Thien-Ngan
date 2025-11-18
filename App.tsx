@@ -9,9 +9,11 @@ import ModeSelectionScreen from './components/ModeSelectionScreen';
 import ScrambleScreen from './components/ScrambleScreen';
 import MultipleChoiceScreen from './components/MultipleChoiceScreen';
 import FirstLetterScreen from './components/FirstLetterScreen';
-import DictationScreen from './components/DictationScreen';
+import ReconstructScreen from './components/ReconstructScreen';
+import LearningPlanScreen from './components/LearningPlanScreen';
 import { MusicalNoteIcon, PaintBrushIcon } from './components/icons';
 import { useTheme } from './contexts/ThemeContext';
+import { useProgress } from './contexts/ProgressContext';
 
 type MusicOption = 'off' | 'relaxing' | 'baroque';
 
@@ -30,12 +32,14 @@ const App: React.FC = () => {
   const [difficulty, setDifficulty] = useState<number>(1);
   const [error, setError] = useState<string | null>(null);
   const [lastUserInput, setLastUserInput] = useState<string>('');
+  const [currentPlanDay, setCurrentPlanDay] = useState<number | null>(null);
   
   const audioRef = useRef<HTMLAudioElement>(null);
   const [musicOption, setMusicOption] = useState<MusicOption>('off');
   const [showMusicMenu, setShowMusicMenu] = useState(false);
 
   const { toggleTheme } = useTheme();
+  const { markDayAsComplete } = useProgress();
 
   useEffect(() => {
     const audioElement = audioRef.current;
@@ -53,12 +57,13 @@ const App: React.FC = () => {
   }, [musicOption]);
 
 
-  const handleStartChallenge = useCallback(async (userInput: string) => {
+  const handleStartChallenge = useCallback(async (userInput: string, dayIndex: number | null = null) => {
     setGameState(GameState.Loading);
     setError(null);
     setIsCorrect(null);
     setIncorrectIndices([]);
     setLastUserInput(userInput);
+    setCurrentPlanDay(dayIndex);
     setDifficulty(1);
 
     try {
@@ -72,6 +77,10 @@ const App: React.FC = () => {
     }
   }, []);
 
+  const handleShowLearningPlan = useCallback(() => {
+    setGameState(GameState.LearningPlan);
+  }, []);
+
   const handleProceedToModeSelection = useCallback(() => {
     setGameState(GameState.ModeSelection);
   }, []);
@@ -82,7 +91,7 @@ const App: React.FC = () => {
         [GameMode.Scramble]: GameState.Scramble,
         [GameMode.MultipleChoice]: GameState.MultipleChoice,
         [GameMode.FirstLetter]: GameState.FirstLetter,
-        [GameMode.Dictation]: GameState.Dictation,
+        [GameMode.Reconstruct]: GameState.Reconstruct,
     }[mode];
     setGameState(newGameState);
   }, []);
@@ -126,11 +135,14 @@ const App: React.FC = () => {
     setIncorrectIndices(incorrect);
     if (incorrect.length === 0) {
       setIsCorrect(true);
+      if (currentPlanDay !== null) {
+          markDayAsComplete(currentPlanDay);
+      }
       setGameState(GameState.Result);
     } else {
       setIsCorrect(false);
     }
-  }, [challengeData]);
+  }, [challengeData, currentPlanDay, markDayAsComplete]);
 
   const handleTryAgain = useCallback(() => {
     if (!challengeData) return;
@@ -147,22 +159,26 @@ const App: React.FC = () => {
     setIsCorrect(null);
     setError(null);
     setDifficulty(1);
+    setCurrentPlanDay(null);
     setGameState(GameState.Welcome);
   }, []);
 
   const renderContent = () => {
-    if (!challengeData) {
-        switch (gameState) {
-            case GameState.Loading: return <LoadingSpinner />;
-            case GameState.Welcome:
-            default:
-                return <WelcomeScreen onStart={handleStartChallenge} error={error} />;
-        }
-    }
-
     switch (gameState) {
       case GameState.Loading:
         return <LoadingSpinner />;
+      case GameState.LearningPlan:
+        return <LearningPlanScreen onSelectVerse={handleStartChallenge} onBack={handleNewVerse} />;
+      case GameState.Welcome:
+        return <WelcomeScreen onStart={handleStartChallenge} onShowLearningPlan={handleShowLearningPlan} error={error} />;
+    }
+
+    if (!challengeData) {
+        // Fallback if challengeData is null for game states
+        return <WelcomeScreen onStart={handleStartChallenge} onShowLearningPlan={handleShowLearningPlan} error={error} />;
+    }
+
+    switch (gameState) {
       case GameState.Memorize:
         return <MemorizeScreen challengeData={challengeData} onStartChallenge={handleProceedToModeSelection} />;
       case GameState.ModeSelection:
@@ -173,8 +189,8 @@ const App: React.FC = () => {
         return <MultipleChoiceScreen challengeData={challengeData} onNewVerse={handleNewVerse} />;
        case GameState.FirstLetter:
         return <FirstLetterScreen challengeData={challengeData} onNewVerse={handleNewVerse} />;
-       case GameState.Dictation:
-        return <DictationScreen challengeData={challengeData} onNewVerse={handleNewVerse} />;
+       case GameState.Reconstruct:
+        return <ReconstructScreen challengeData={challengeData} onNewVerse={handleNewVerse} />;
       case GameState.Challenge:
       case GameState.Result:
         return (
@@ -192,7 +208,7 @@ const App: React.FC = () => {
             />
           );
       default:
-        return <WelcomeScreen onStart={handleStartChallenge} error={error} />;
+        return <WelcomeScreen onStart={handleStartChallenge} onShowLearningPlan={handleShowLearningPlan} error={error} />;
     }
   };
 

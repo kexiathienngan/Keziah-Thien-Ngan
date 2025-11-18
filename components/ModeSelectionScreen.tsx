@@ -1,6 +1,6 @@
 import React from 'react';
 import { GameMode } from '../types';
-import { PencilSquareIcon, Bars3Icon, CheckBadgeIcon, DocumentTextIcon, EarIcon } from './icons';
+import { PencilSquareIcon, Bars3Icon, CheckBadgeIcon, DocumentTextIcon, PencilIcon } from './icons';
 
 interface ModeSelectionScreenProps {
   onSelectMode: (mode: GameMode) => void;
@@ -33,10 +33,10 @@ const modes = [
         description: 'Gõ lại câu dựa trên các chữ cái đầu được gợi ý.'
     },
     {
-        mode: GameMode.Dictation,
-        icon: EarIcon,
-        title: 'Nghe & Chép',
-        description: 'Lắng nghe và gõ lại chính xác câu Kinh Thánh.'
+        mode: GameMode.Reconstruct,
+        icon: PencilIcon,
+        title: 'Tái tạo từ trí nhớ',
+        description: 'Gõ lại toàn bộ câu gốc từ trí nhớ của bạn.'
     }
 ];
 

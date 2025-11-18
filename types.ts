@@ -3,11 +3,12 @@ export enum GameState {
   Loading,
   Memorize,
   ModeSelection,
+  LearningPlan,
   Challenge, // Fill in the blanks
   Scramble,
   MultipleChoice,
   FirstLetter,
-  Dictation,
+  Reconstruct,
   Result,
 }
 
@@ -16,7 +17,7 @@ export enum GameMode {
   Scramble,
   MultipleChoice,
   FirstLetter,
-  Dictation,
+  Reconstruct,
 }
 
 export interface MultipleChoiceOption {

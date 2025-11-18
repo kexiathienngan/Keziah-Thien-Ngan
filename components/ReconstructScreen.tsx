@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { ChallengeData } from '../types';
 import GameResult from './GameResult';
 
-interface FirstLetterScreenProps {
+interface ReconstructScreenProps {
   challengeData: ChallengeData;
   onNewVerse: () => void;
 }
 
-const FirstLetterScreen: React.FC<FirstLetterScreenProps> = ({ challengeData, onNewVerse }) => {
-  const { originalVerse, reference, firstLetters } = challengeData;
+const ReconstructScreen: React.FC<ReconstructScreenProps> = ({ challengeData, onNewVerse }) => {
+  const { originalVerse, reference } = challengeData;
   const [userAnswer, setUserAnswer] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   
@@ -31,19 +31,15 @@ const FirstLetterScreen: React.FC<FirstLetterScreenProps> = ({ challengeData, on
   
   return (
     <div className="p-6 md:p-10 bg-surface backdrop-blur-sm rounded-2xl shadow-lg border border-main text-center animate-fade-in">
-      <h2 className="text-xl text-secondary mb-2">Gõ lại câu gốc dựa theo các chữ cái đầu:</h2>
+      <h2 className="text-xl text-secondary mb-2">Hãy gõ lại câu gốc từ trí nhớ của bạn:</h2>
       <p className="text-right font-bold text-secondary text-xl mb-6">({reference})</p>
-
-      <div className="p-4 bg-primary/5 rounded-lg border border-main text-left">
-        <p className="font-mono text-lg md:text-xl text-accent tracking-wider">{firstLetters}</p>
-      </div>
 
       <textarea
         value={userAnswer}
         onChange={(e) => setUserAnswer(e.target.value)}
-        placeholder="Gõ lại câu Kinh Thánh ở đây..."
-        className="mt-6 w-full h-40 p-4 font-serif text-lg text-primary bg-white border-2 border-main rounded-lg focus:ring-2 ring-accent focus:border-accent transition duration-200"
-        aria-label="Nhập câu Kinh Thánh"
+        placeholder="Gõ lại toàn bộ câu Kinh Thánh ở đây..."
+        className="w-full h-48 p-4 font-serif text-lg text-primary bg-white border-2 border-main rounded-lg focus:ring-2 ring-accent focus:border-accent transition duration-200"
+        aria-label="Nhập câu Kinh Thánh từ trí nhớ"
       />
       
       <div className="mt-6">
@@ -59,4 +55,4 @@ const FirstLetterScreen: React.FC<FirstLetterScreenProps> = ({ challengeData, on
   );
 };
 
-export default FirstLetterScreen;
+export default ReconstructScreen;

@@ -6,11 +6,12 @@ interface GameResultProps {
     isCorrect: boolean;
     originalVerse: string;
     reference: string;
+    userAnswer?: string;
     onTryAgain: () => void;
     onNewVerse: () => void;
 }
 
-const GameResult: React.FC<GameResultProps> = ({ isCorrect, originalVerse, reference, onTryAgain, onNewVerse }) => {
+const GameResult: React.FC<GameResultProps> = ({ isCorrect, originalVerse, reference, userAnswer, onTryAgain, onNewVerse }) => {
     if (isCorrect) {
         return (
             <div className="p-6 md:p-10 bg-surface backdrop-blur-sm rounded-2xl shadow-lg border border-main text-center animate-fade-in">
@@ -37,13 +38,24 @@ const GameResult: React.FC<GameResultProps> = ({ isCorrect, originalVerse, refer
     } else {
         return (
              <div className="p-6 md:p-10 bg-surface backdrop-blur-sm rounded-2xl shadow-lg border border-main text-center animate-fade-in">
-                <div className="p-6 bg-error-light border-l-4 border-error rounded-r-lg">
+                <div className="p-6 bg-error-light border-l-4 border-error rounded-r-lg text-left">
                     <div className="flex items-center">
                         <LightBulbIcon className="w-8 h-8 text-error mr-4 flex-shrink-0" />
                         <div>
                             <h3 className="text-xl font-bold text-error-dark">Chưa đúng lắm, nhưng đừng nản lòng!</h3>
-                            <p className="mt-1 text-primary">Hãy xem lại câu gốc và thử lại nhé!</p>
-                             <p className="font-serif text-lg mt-2 text-primary/70">{originalVerse} ({reference})</p>
+                            <p className="mt-1 text-primary">Hãy xem lại, so sánh và thử lại nhé!</p>
+                        </div>
+                    </div>
+                    <div className="mt-4 space-y-3">
+                        {userAnswer && (
+                             <div>
+                                <p className="text-sm font-bold text-secondary">Câu trả lời của bạn:</p>
+                                <p className="font-serif text-lg text-primary/80 bg-red-100/50 p-2 rounded-md">{userAnswer}</p>
+                            </div>
+                        )}
+                        <div>
+                            <p className="text-sm font-bold text-secondary">Câu trả lời đúng:</p>
+                            <p className="font-serif text-lg text-primary bg-green-100/50 p-2 rounded-md">{originalVerse} ({reference})</p>
                         </div>
                     </div>
                 </div>

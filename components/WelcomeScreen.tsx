@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { BookOpenIcon } from './icons';
+import { BookOpenIcon, CalendarDaysIcon } from './icons';
 
 interface WelcomeScreenProps {
   onStart: (userInput: string) => void;
+  onShowLearningPlan: () => void;
   error: string | null;
 }
 
@@ -13,7 +14,7 @@ const suggestedVerses = [
     { reference: "Châm-ngôn 3:5-6", topic: "Tin Cậy" },
 ];
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, error }) => {
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, onShowLearningPlan, error }) => {
   const [userInput, setUserInput] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -33,13 +34,29 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, error }) => {
   }
 
   return (
-    <div className="text-center p-8 bg-surface backdrop-blur-sm rounded-2xl shadow-lg border border-main">
+    <div className="text-center p-8 bg-surface backdrop-blur-sm rounded-2xl shadow-lg border border-main animate-fade-in">
       <div className="flex justify-center items-center mb-4">
         <BookOpenIcon className="w-12 h-12 text-accent" />
       </div>
       <h1 className="text-3xl font-bold text-primary mb-2">Gia Sư Kinh Thánh</h1>
       <p className="text-secondary mb-6">Chào bạn! Tôi rất vui được đồng hành cùng bạn trên hành trình học thuộc Lời Chúa. Bạn muốn bắt đầu với câu gốc nào (ví dụ: Giăng 3:16) hay chủ đề nào hôm nay?</p>
       
+      <button 
+        onClick={onShowLearningPlan}
+        className="w-full mb-6 px-6 py-4 text-lg font-semibold text-primary-text bg-primary rounded-lg shadow-md hover:bg-primary-hover transition-transform transform hover:scale-105 flex items-center justify-center gap-3"
+      >
+        <CalendarDaysIcon className="w-6 h-6"/> Lộ trình học 365 ngày
+      </button>
+
+      <div className="relative mb-6">
+        <div className="absolute inset-0 flex items-center" aria-hidden="true">
+          <div className="w-full border-t border-main" />
+        </div>
+        <div className="relative flex justify-center">
+          <span className="bg-surface px-2 text-sm text-secondary">HOẶC</span>
+        </div>
+      </div>
+
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
         <input
           type="text"
