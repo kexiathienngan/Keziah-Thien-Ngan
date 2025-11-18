@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gia Sư Kinh Thánh</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-success: #16a34a; /* green-600 */
+      --color-success-dark: #14532d; /* green-900 */
+      --color-success-light: #f0fdf4; /* green-50 */
+      --color-error: #dc2626; /* red-600 */
+      --color-error-dark: #7f1d1d; /* red-900 */
+      --color-error-light: #fef2f2; /* red-50 */
+    }
+
+    .theme-warm {
+      --color-bg: #fefce8; /* amber-50 */
+      --color-surface: rgba(255, 255, 255, 0.6);
+      --color-text-primary: #44403c; /* stone-700 */
+      --color-text-secondary: #78716c; /* stone-500 */
+      --color-primary: #d97706; /* amber-600 */
+      --color-primary-hover: #b45309; /* amber-700 */
+      --color-primary-text: #ffffff;
+      --color-secondary-bg: #fde68a; /* amber-200 */
+      --color-secondary-text: #92400e; /* amber-800 */
+      --color-secondary-hover: #fcd34d; /* amber-300 */
+      --color-border-main: #fcd34d; /* amber-300 */
+      --color-border-focus: #fbbf24; /* amber-400 */
+      --color-input-bg: rgba(253, 230, 138, 0.3); /* amber-200/30 */
+      --color-selection: #fde68a; /* amber-200 */
+    }
+
+    .theme-cool {
+      --color-bg: #f0f9ff; /* sky-50 */
+      --color-surface: rgba(255, 255, 255, 0.6);
+      --color-text-primary: #334155; /* slate-700 */
+      --color-text-secondary: #64748b; /* slate-500 */
+      --color-primary: #0284c7; /* sky-600 */
+      --color-primary-hover: #0369a1; /* sky-700 */
+      --color-primary-text: #ffffff;
+      --color-secondary-bg: #bae6fd; /* sky-200 */
+      --color-secondary-text: #075985; /* sky-800 */
+      --color-secondary-hover: #7dd3fc; /* sky-300 */
+      --color-border-main: #7dd3fc; /* sky-300 */
+      --color-border-focus: #38bdf8; /* sky-400 */
+      --color-input-bg: rgba(186, 230, 253, 0.3); /* sky-200/30 */
+      --color-selection: #bae6fd; /* sky-200 */
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    ::selection {
+      background-color: var(--color-selection);
+    }
+    .font-serif {
+      font-family: 'Noto Serif', serif;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    .bg-main { background-color: var(--color-bg); }
+    .bg-surface { background-color: var(--color-surface); }
+    .bg-primary { background-color: var(--color-primary); }
+    .hover\:bg-primary-hover:hover { background-color: var(--color-primary-hover); }
+    .bg-secondary-bg { background-color: var(--color-secondary-bg); }
+    .hover\:bg-secondary-hover:hover { background-color: var(--color-secondary-hover); }
+    .bg-input { background-color: var(--color-input-bg); }
+
+    .text-primary { color: var(--color-text-primary); }
+    .text-secondary { color: var(--color-text-secondary); }
+    .text-accent { color: var(--color-primary); }
+    .text-primary-text { color: var(--color-primary-text); }
+    .text-secondary-text { color: var(--color-secondary-text); }
+    
+    .border-main { border-color: var(--color-border-main); }
+    .focus\:border-focus:focus { border-color: var(--color-border-focus); }
+    .border-accent { border-color: var(--color-primary); }
+    .border-b-accent { border-bottom-color: var(--color-border-focus); }
+    .focus\:border-accent-focus:focus { border-color: var(--color-primary); }
+
+    .ring-accent { --tw-ring-color: var(--color-border-focus); }
+    .focus\:ring-accent:focus { --tw-ring-color: var(--color-border-focus); }
+    
+    .bg-success { background-color: var(--color-success); }
+    .text-success { color: var(--color-success); }
+    .text-success-dark { color: var(--color-success-dark); }
+    .bg-success-light { background-color: var(--color-success-light); }
+    .border-success { border-color: var(--color-success); }
+    
+    .bg-error { background-color: var(--color-error); }
+    .text-error { color: var(--color-error); }
+    .text-error-dark { color: var(--color-error-dark); }
+    .bg-error-light { background-color: var(--color-error-light); }
+    .border-error { border-color: var(--color-error); }
+    .border-b-error { border-bottom-color: var(--color-error); }
+    .focus\:border-error-focus:focus { border-color: var(--color-error); }
+    .ring-error { --tw-ring-color: var(--color-error); }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+</head>
+<body class="theme-warm">
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
